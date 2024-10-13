@@ -1,4 +1,6 @@
+import ast
 import logging
+import os
 from core.auth.bearer import bearer_oauth
 from core.auth.oauth1 import OAuth1Service
 from core.credentials import CONSUMER_KEY, CONSUMER_SECRET
@@ -38,7 +40,7 @@ class AutoRetweet:
         
         stream_service.delete_all_rules()
         
-        stream_rules = Rules.from_jsonl(jsonl=[])
+        stream_rules = Rules.from_jsonl(jsonl=ast.literal_eval(os.getenv("STREAM_RULES")))
         stream_service.set_rules(stream_rules)
         
         stream_service.stream(retweet_service.retweet)
