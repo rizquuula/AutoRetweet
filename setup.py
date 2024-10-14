@@ -5,7 +5,7 @@ setup(
     version='0.1.0',
     description='A Python package for automatically retweeting based on certain criteria.',
     author='Razif Rizqullah', 
-    author_email='razifrizqullah@example.com',
+    author_email='razifrizqullah@gmail.com',
     url='https://github.com/rizquuula',
     packages=find_packages(),
     install_requires=[
