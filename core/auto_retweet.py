@@ -1,23 +1,25 @@
-import ast
-import logging
-import os
 from core.auth.bearer import bearer_oauth
 from core.auth.oauth1 import OAuth1Service
 from core.credentials import CONSUMER_KEY, CONSUMER_SECRET
 from core.retweet.api import RetweetAPI
 from core.retweet.service import RetweetService
 from core.stream.api import StreamAPI
-from core.stream.model import Rules
+from core.stream.model import Rule, Rules
 from core.stream.service import StreamService
 from core.user.api import UserAPI
 from core.user.service import UserService
+import logging
 
 
 class AutoRetweet:
     
-    def __init__(self) -> None:
-
+    def __init__(self, target_accounts: str) -> None:
+        self.target_usernames = target_accounts
         self.logger = self.__create_logger()
+        
+        # initiate empty rules and do conversion from account username to rules
+        self.__rules = Rules()
+        self.__usernames_to_rules()
     
     
     def start(self) -> None:
@@ -37,12 +39,8 @@ class AutoRetweet:
         
         stream_api = StreamAPI(bearer_oauth)
         stream_service = StreamService(stream_api, self.logger)
-        
         stream_service.delete_all_rules()
-        
-        stream_rules = Rules.from_jsonl(jsonl=ast.literal_eval(os.getenv("STREAM_RULES")))
-        stream_service.set_rules(stream_rules)
-        
+        stream_service.set_rules(self.__rules)
         stream_service.stream(retweet_service.retweet)
 
     
@@ -59,5 +57,12 @@ class AutoRetweet:
         logger = logging.getLogger('AutoTweetLogger')
         return logger
 
-        
+    def __usernames_to_rules(self):
+        for username in self.target_usernames:
+            rule = Rule(
+                id=None,
+                value=f"from:{username}",
+                tag=f"stream to user {username}"
+            )
+            self.__rules.add(rule)
     

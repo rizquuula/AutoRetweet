@@ -32,3 +32,6 @@ class Rules:
     
     def id_to_list(self) -> List[str]:
         return [r.id for r in self.rules]
+
+    def add(self, rule: Rule) -> None:
+        self.rules.append(rule)

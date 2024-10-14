@@ -3,6 +3,9 @@
 __pycache__
 venv
 .vscode
+build
+
+*.egg-info
 
 privatenote*
 
