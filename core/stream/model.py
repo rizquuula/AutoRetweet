@@ -19,8 +19,8 @@ class Rule:
 
 
 class Rules:
-    def __init__(self, rules: List[Rule]) -> None:
-        self.rules = rules
+    def __init__(self, rules: List[Rule]=None) -> None:
+        self.rules = rules if rules is not None else []
     
     @staticmethod
     def from_jsonl(jsonl: List[dict]) -> "Rules":
