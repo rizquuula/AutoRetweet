@@ -1,4 +1,4 @@
-# Fiverr-brianbardos-AutoRetweet
+# Twitter-AutoRetweet
 
 A Python package for automatically retweeting based on certain criteria.
 
